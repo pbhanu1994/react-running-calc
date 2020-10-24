@@ -1,26 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { Route, Redirect, Switch } from 'react-router-dom'
+import NavBar from './components/NavBar'
+import Divider from '@material-ui/core/Divider'
+import Home from './components/Home'
+import NotFound from './components/NotFound'
 
-function App() {
+function App () {
+  const [value, setValue] = React.useState('pace')
+
+  function handleChangeNavIcon (itemSelected) {
+    setValue(itemSelected)
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <main>
+      <NavBar selectedNavIcon={value} onChangeNavIcon={handleChangeNavIcon} />
+      <Divider variant='middle' />
+      <Switch>
+        <Route
+          exact
+          path='/'
+          render={props => <Home {...props} selectedNavIcon={value} />}
+        />
+        <Route path='/not-found' component={NotFound} />
+        <Redirect to='/not-found' />
+      </Switch>
+    </main>
+  )
 }
 
-export default App;
+export default App
